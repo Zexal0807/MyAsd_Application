@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorLogoBackground">#EC1C22</color>
+
+    <color name="colorPrimary">#FFEC1C22</color>
+    <color name="colorPrimaryVariant">#FFB10000</color>
+    <color name="colorOnPrimary">#FF000000</color>
+
+    <color name="colorSecondary">#FFD50000</color>
+    <color name="colorSecondaryVariant">#FF9B0000</color>
+    <color name="colorOnSecondary">#FFFFFFFF</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
