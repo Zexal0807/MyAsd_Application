@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
         });
         */
 
-        myWebView.loadUrl("https://myasd.roujutsu.it");
         String cookie = sharedPreferences.getString("cookie", "null");
         if (!cookie.equals("null")) {
             CookieManager.getInstance().setCookie("https://myasd.roujutsu.it", cookie);
         }
+        myWebView.loadUrl("https://myasd.roujutsu.it");
     }
 
     @Override
