@@ -3,11 +3,20 @@ package com.roujutsu.myasd;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkDownloadPermission();
 
         this.sharedPreferences = getPreferences(MODE_PRIVATE);
 
@@ -39,26 +50,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        String cookie = sharedPreferences.getString("cookie", "null");
+        if (!cookie.equals("null")) {
+            CookieManager.getInstance().setCookie("https://myasd.roujutsu.it", cookie);
+        }
 
-        //        checkDownloadPermission();
-        /*
         myWebView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse("https://myasd.roujutsu.it/api/file/10");
-                //Uri uri = Uri.parse("https://www.roujutsu.it/frontEnd/assets/logo.png");
+                Uri uri = Uri.parse(url);
+
+                String title = URLUtil.guessFileName(url, contentDisposition, mimetype);
 
                 DownloadManager.Request request = new DownloadManager.Request(uri);
 
                 request.allowScanningByMediaScanner();
-                request.setTitle("10.png");
-                request.setDescription("Downloading file...");
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "10.png");
+
+                request.setTitle(title);
+
+                request.addRequestHeader("Cookie", cookie);
+                request.setDescription("Roujutsu - MyAsd");
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title);
+
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 dm.enqueue(request);
                 Toast.makeText(getApplicationContext(), "Downloading File", Toast.LENGTH_LONG).show();
+                registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
             }
+
             BroadcastReceiver onComplete = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -66,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
         });
-        */
 
-        String cookie = sharedPreferences.getString("cookie", "null");
-        if (!cookie.equals("null")) {
-            CookieManager.getInstance().setCookie("https://myasd.roujutsu.it", cookie);
-        }
         myWebView.loadUrl("https://myasd.roujutsu.it");
     }
 
