@@ -94,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 // Intent per selezionare un contenuto
                 Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                // contentSelectionIntent.setType("image/*");
+                contentSelectionIntent.setType("*/*");
+                String[] mimeTypes = {"image/*", "application/pdf"};
+                contentSelectionIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 
                 Intent[] intentArray;
                 if (takePictureIntent != null) {
