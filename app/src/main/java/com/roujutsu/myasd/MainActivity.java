@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 // Intent per selezionare un contenuto
                 Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                contentSelectionIntent.setType("image/*");
+                // contentSelectionIntent.setType("image/*");
 
                 Intent[] intentArray;
                 if (takePictureIntent != null) {
